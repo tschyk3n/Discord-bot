@@ -1,4 +1,3 @@
-// This code shows the ability to ban a user with the right permission. It first checks the database to verify if the user is already banned. If they are not banned, they are added to the database. The ban details are then sent to server.js, which is forwards the information to roblox Studio
 
 const { SlashCommandBuilder } = require('discord.js');
 const noblox = require('noblox.js');
