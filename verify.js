@@ -153,6 +153,7 @@ module.exports = {
                                             await guildMember.setNickname(username);
                                             console.log(`Updated ${interaction.user.tag}'s nickname to ${username}`);
                                         } catch (error) {
+                                            // Handle error if unable to update nicknames (Happens if the bot does not have enough permission to update)
                                             console.error(`Failed to update ${interaction.user.tag}'s nickname:`, error);
                                         }
 
@@ -199,9 +200,10 @@ module.exports = {
                                     } else {
                                         console.log("Interaction already replied or deferred.");
                                     }
-                                    secondCollector.stop();
+                                    secondCollector.stop(); // Stop the collector
                                 }
                             } catch (error) {
+                                // Handle errors during button interactions
                                 console.error('An error occurred while processing the button interaction:', error);
                                 if (!i.replied && !i.deferred) {
                                     await i.reply({ content: 'An error occurred while processing your request.', ephemeral: true });
@@ -230,14 +232,15 @@ module.exports = {
                         collector.stop();
                     }
                 } catch (error) {
+                    // Handles errors during button interactions
                     console.error('An error occurred while processing the button interaction:', error);
                     if (!i.replied && !i.deferred) {
                         await i.reply({ content: 'An error occurred while processing your request.', ephemeral: true });
                     }
                 }
             });
-
-            collector.on('end', collected => {
+            // If user did not respond
+            collector.on('end', collected => { 
                 if (collected.size === 0) {
                     if (!interaction.replied && !interaction.deferred) {
                         interaction.editReply({ content: 'You did not respond in time. Verification process cancelled.', components: [] });
@@ -246,6 +249,7 @@ module.exports = {
             });
 
         } catch (error) {
+            // Handle error during the verifcation process
             console.error('An error occurred during the verification process:', error);
             if (!interaction.replied && !interaction.deferred) {
                 await interaction.reply({ content: 'An error occurred while fetching Roblox information. Please try again later.', ephemeral: true });
